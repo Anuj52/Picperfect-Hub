@@ -1,4 +1,4 @@
-# PicPerfect-Hub
+# PicPerfect-Hub Django Project
 
 Welcome to PicPerfectHub, an online platform dedicated to selling high-quality photographs.
 
