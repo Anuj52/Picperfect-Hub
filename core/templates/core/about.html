@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>About | PicPerfectHub</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        main p {
+            margin-bottom: 20px;
+        }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
+        <a href="/" class="text-3xl font-bold text-teal-600 hover:text-teal-800 transition" target="_blank">PicPerfectHub</a>
+        <!-- Back button -->
+        <a href="javascript:history.back()" class="text-3xl font-bold text-teal-600 hover:text-teal-800 transition">Back</a>
+    </nav>
+    <div class="container mx-auto px-6 py-12">
+        <div class="container">
+            <header>
+                <h1>About PicPerfectHub</h1>
+            </header>
+            <main>
+                <p>
+                    PicPerfectHub is an online platform dedicated to selling high-quality photographs. It provides a marketplace for photographers to showcase and sell their captivating images to a global audience of buyers. With a vast collection of diverse and visually appealing photographs, customers can easily find and purchase images that suit their creative needs.
+                </p>
+                <p>
+                    Photographers on PicPerfectHub have the opportunity to gain recognition for their work, as well as generate income by selling their photos to individuals, businesses, and organizations looking to enhance their projects, websites, marketing materials, and more. The site offers a user-friendly interface, making it effortless for both photographers and buyers to navigate, search for specific themes or genres, and complete transactions securely.
+                </p>
+                <p>
+                    Whether someone is a professional photographer or an enthusiastic hobbyist, PicPerfectHub fosters a vibrant community where creativity flourishes, and artistry is appreciated. By providing a seamless platform for buying and selling photographs, the site aims to enrich visual storytelling and connect photographers with a diverse clientele worldwide.
+                </p>
+            </main>
+            <footer>
+                <p>&copy; 2023 PicPerfectHub. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
+    <footer class="py-6 px-6 flex justify-between bg-gray-800">
+        <div class="w-2/3 pr-10">
+            <h3 class="mb-5 font-semibold text-gray-500">About</h3>
+            <p class="text-lg text-gray-500">PicPerfectHub is an online marketplace dedicated to selling captivating photographs. It offers photographers a platform to showcase and sell their images, while providing buyers with a diverse collection of high-quality photos for various creative purposes. With a user-friendly interface and a vibrant community of artists, PicPerfectHub aims to enrich visual storytelling and connect photographers with a global audience seeking exceptional images.</p>
+        </div>
+        <div class="w-1/3">
+            <h3 class="mb-5 font-semibold text-gray-400">Menu</h3>
+            <ul class="space-y-2">
+                <li><a href="{% url 'core:about' %}" class="text-lg text-teal-500 hover:text-teal-700">About</a></li>
+                <li><a href="{% url 'core:contact' %}" class="text-lg text-teal-500 hover:text-teal-700">Contact</a></li>
+                <li><a href="#" class="text-lg text-teal-500 hover:text-teal-700">Terms of Use</a></li>
+                <li><a href="#" class="text-lg text-teal-500 hover:text-teal-700">Privacy Policy</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>
