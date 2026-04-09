@@ -1,2 +1,5 @@
-pip install -r requirement.txt
-python3.11.8 manage.py collectstatic
+#!/usr/bin/env bash
+set -e
+
+python -m pip install -r requirements.txt
+python manage.py collectstatic --noinput

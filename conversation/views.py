@@ -13,7 +13,7 @@ def new_conversation(request, item_pk):
     if item.created_by == request.user:
         return redirect('dashboard:index')
 
-    conversations = Conversation.objects.filter(item=item).filter(members__in=[request.user.id])
+    conversations = Conversation.objects.filter(item=item, members=request.user)
 
     if conversations:
         return redirect('conversation:detail', pk=conversations.first().id)
@@ -36,7 +36,7 @@ def new_conversation(request, item_pk):
 
 @login_required
 def inbox(request):
-    conversations = Conversation.objects.filter(members__in=[request.user.id])
+    conversations = Conversation.objects.filter(members=request.user)
 
     return render(request, 'conversation/inbox.html', {
         'conversations': conversations
@@ -44,7 +44,7 @@ def inbox(request):
 
 @login_required
 def detail(request, pk):
-    conversation = Conversation.objects.filter(members__in=[request.user.id]).get(pk=pk)
+    conversation = get_object_or_404(Conversation, pk=pk, members=request.user)
 
     if request.method == 'POST':
         form = ConversationMessageForm(request.POST)

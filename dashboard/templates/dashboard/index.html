@@ -8,7 +8,11 @@
         <div class="px-6">
             <a href="{% url 'item:detail' item.id %}">
                 <div>
-                    <img src="{{ item.image.url }}" class="rounded-t-xl">
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" class="rounded-t-xl" alt="{{ item.name }}">
+                    {% else %}
+                        <div class="h-48 flex items-center justify-center bg-gray-200 rounded-t-xl text-gray-500">No image</div>
+                    {% endif %}
                 </div>
                 <div class="px-6 bg-white rounded-b-xl">
                     <h2 class="py-3 text-2xl">{{ item.name }}</h2>

@@ -19,8 +19,21 @@ PicPerfectHub is designed to provide users with a seamless experience in discove
 To get started with PicPerfectHub locally, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/Anuj52/Picperfect-Hub.git`
-2. Navigate to the project directory: `cd Puddle`
-3. Install dependencies: `pip install -r requirements.txt`
-4. Start the Django server: `python manage.py runserver`
+2. Navigate to the project directory: `cd Picperfect-Hub`
+3. (Recommended) Create + activate a virtual environment:
+   - Windows PowerShell: `python -m venv .venv` then `.venv\Scripts\Activate.ps1`
+   - macOS/Linux: `python3 -m venv .venv` then `source .venv/bin/activate`
+4. Install dependencies: `python -m pip install -r requirements.txt`
+5. Apply migrations: `python manage.py migrate`
+6. (Optional) Create an admin user: `python manage.py createsuperuser`
+7. Start the Django server: `python manage.py runserver`
+
+## Environment variables (production)
+
+When deploying with `DEBUG=False`, set at least:
+
+- `DJANGO_SECRET_KEY` (required)
+- `DJANGO_ALLOWED_HOSTS` (comma-separated, e.g. `example.com,.vercel.app`)
+- `DJANGO_DEBUG=0`
 
 

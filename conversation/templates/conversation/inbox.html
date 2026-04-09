@@ -10,7 +10,11 @@
         <a href="{% url 'conversation:detail' conversation.id %}">
             <div class="p-6 flex bg-gray-100 rounded-xl">
                 <div class="pr-6">
-                    <img src="{{ conversation.item.image.url }}" class="w-20 rounded-xl">
+                    {% if conversation.item.image %}
+                        <img src="{{ conversation.item.image.url }}" class="w-20 rounded-xl" alt="{{ conversation.item.name }}">
+                    {% else %}
+                        <div class="w-20 h-20 flex items-center justify-center bg-gray-200 rounded-xl text-gray-500">No image</div>
+                    {% endif %}
                 </div>
 
                 <div>

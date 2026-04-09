@@ -15,16 +15,34 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+def env_bool(name: str, default: bool = False) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+
+    return value.strip().lower() in {'1', 'true', 'yes', 'on'}
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6wc)sv=ln&^rnvs*7$h68%1p1ham&!2-h&*9445m-@v!9%*tul'
+IS_VERCEL = env_bool('VERCEL', False)
+
+DEBUG = env_bool('DJANGO_DEBUG', default=not IS_VERCEL)
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'django-insecure-6wc)sv=ln&^rnvs*7$h68%1p1ham&!2-h&*9445m-@v!9%*tul'
+    else:
+        raise RuntimeError('DJANGO_SECRET_KEY is required when DEBUG=False')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+default_allowed_hosts = '.vercel.app,localhost,127.0.0.1' if IS_VERCEL else 'localhost,127.0.0.1'
+allowed_hosts_env = os.environ.get('DJANGO_ALLOWED_HOSTS', default_allowed_hosts)
+ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
 
-ALLOWED_HOSTS = []
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
@@ -77,10 +95,11 @@ WSGI_APPLICATION = 'puddle.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+db_path = os.environ.get('DJANGO_DB_PATH')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / 'C:/web devloping/project/sqlite/db.sqlite3'),  # Use forward slashes or raw string
+        'NAME': db_path or str(BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -117,8 +136,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles_build'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = env_bool('DJANGO_SECURE_SSL_REDIRECT', True)
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+    # Only enable HSTS if you're serving the entire site over HTTPS.
+    SECURE_HSTS_SECONDS = int(os.environ.get('DJANGO_SECURE_HSTS_SECONDS', '31536000'))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    # When behind a reverse proxy (e.g. Vercel), honor X-Forwarded-Proto for HTTPS detection.
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

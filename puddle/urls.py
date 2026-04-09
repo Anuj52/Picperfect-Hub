@@ -13,7 +13,7 @@ urlpatterns = [
     # Include the URL patterns from the 'dashboard' app
     path('dashboard/', include('dashboard.urls')),
     # Include the Django admin interface URL patterns
-     path('inbox/', include('conversation.urls')),
+    path('inbox/', include('conversation.urls')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # Add URL patterns to serve media files during development

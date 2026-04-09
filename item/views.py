@@ -1,13 +1,20 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
+from django.views.decorators.http import require_POST
 from .forms import NewItemForm, EditItemForm
 from .models import Item, Category
 
 def items(request):
     query = request.GET.get('query', '')
+    category_id = request.GET.get('category', '')
     categories = Category.objects.all()
     items = Item.objects.filter(is_sold=False)
+
+    if category_id and category_id.isdigit():
+        items = items.filter(category_id=int(category_id))
+    else:
+        category_id = ''
 
     if query:
         items = items.filter(Q(name__icontains=query) | Q(description__icontains=query))
@@ -15,6 +22,7 @@ def items(request):
     return render(request, 'item/items.html', {
         'items': items,
         'query': query,
+        'category_id': category_id,
         'categories': categories,
     })
 
@@ -37,7 +45,7 @@ def new(request):
             item.created_by = request.user
             item.save()
 
-        return redirect('item:detail', pk=item.id)
+            return redirect('item:detail', pk=item.id)
     else:
         form = NewItemForm()
 
@@ -56,7 +64,7 @@ def edit(request, pk):
         if form.is_valid():
             form.save()
 
-        return redirect('item:detail', pk=item.id)
+            return redirect('item:detail', pk=item.id)
     else:
         form = EditItemForm(instance=item)
 
@@ -66,6 +74,7 @@ def edit(request, pk):
     })
 
 @login_required
+@require_POST
 def delete(request, pk):
     item = get_object_or_404(Item, pk=pk, created_by=request.user)
     item.delete()
